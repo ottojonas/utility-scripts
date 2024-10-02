@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Guessing Game</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      #title {
+        text-align: center;
+        color: rgb(0, 0, 255);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="title">
+      <h1>guessing game</h1>
+    </div>
+    <div id="game">
+      <p>Guess a number between:</p>
+      <input id="lowerBoundInput" type="number" placeholder="lower bound" />
+      <input id="upperBoundInput" type="number" placeholder="upper bound" />
+      <button onclick="startGame()">Set Range</button>
+      <p>Enter your guess:</p>
+      <input id="guessInput" type="number" placeholder="guess" />
+      <button onclick="guessNumber()">Guess</button>
+      <p id="message"></p>
+    </div>
+    <script>
+      var randomNumber = Math.floor(Math.random() * 50) + 1;
+      var chances = 7;
+      var lowerBound;
+      var upperBound;
+
+      function startGame() {
+        lowerBound = parseInt(document.getElementById("lowerBoundInput").value);
+        upperBound = parseInt(document.getElementById("upperBoundInput").value);
+        randomNumber =
+          Math.floor(Math.random() * (upperBound - lowerBound + 1)) +
+          lowerBound;
+      }
+      function guessNumber() {
+        var userGuess = document.getElementById("guessInput").value;
+        var message = document.getElementById("message");
+
+        if (userGuess == randomNumber) {
+          message.textContent = "nice, you have guessed the number. #winning";
+          message.style.color = "green";
+        } else if (userGuess > randomNumber) {
+          chances--;
+          upperBound = parseInt(userGuess) - 1;
+          message.textContent =
+            "too high. try guessing between " +
+            lowerBound +
+            " and " +
+            upperBound +
+            ". you have " +
+            chances +
+            " chances left";
+          message.style.color = "red";
+        } else if (userGuess < randomNumber) {
+          chances--;
+          lowerBound = parseInt(userGuess) + 1;
+          message.textContent =
+            "too low. try guessing between " +
+            lowerBound +
+            " and " +
+            upperBound +
+            ". you have " +
+            chances +
+            " chances left";
+          message.style.color = "red";
+        }
+        if (chances == 0) {
+          message.textContent =
+            "game over. you did not guess the number correctly";
+          message.style.color = "red";
+          document.getElementById("guessInput").disabled = true;
+        }
+      }
+    </script>
+  </body>
+</html>
